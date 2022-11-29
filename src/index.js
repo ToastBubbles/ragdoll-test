@@ -1,14 +1,20 @@
 var bodyCSS = document.getElementById("rag-body").style;
 var leftLegCSS = document.getElementById("left-leg").style;
 var rightLegCSS = document.getElementById("right-leg").style;
+var leftArmCSS = document.getElementById("left-arm").style;
+var rightArmCSS = document.getElementById("right-arm").style;
 
 var bodyVertical = 0;
 var rightLegVertical = 0;
 var leftLegVertical = 0;
+var rightArmVertical = 0;
+var leftArmVertical = 0;
 
 var bodyHorizontal = 0;
 var rightLegHorizontal = 0;
 var leftLegHorizontal = 0;
+var rightArmHorizontal = 0;
+var leftArmHorizontal = 0;
 
 var width = document.getElementById("rag-body").offsetWidth;
 var legWidth = document.getElementById("left-leg").offsetWidth;
@@ -35,10 +41,22 @@ window.onload = function() {
         rightLegCSS.left = `${rightLegHorizontal}px`;
         
         leftLegCSS.top = `${leftLegVertical}px`;  
-        leftLegCSS.left = `${leftLegHorizontal}px`;    
+        leftLegCSS.left = `${leftLegHorizontal}px`;   
+        
+        rightArmCSS.top = `${rightArmVertical}px`;
+        rightArmCSS.left = `${rightArmHorizontal}px`;
+        
+        leftArmCSS.top = `${leftArmVertical}px`;  
+        leftArmCSS.left = `${leftArmHorizontal}px`; 
+
+        // document.getElementById('circle-debug').style.top = `${rightArmVertical}px`
+        // document.getElementById('circle-debug').style.left = `${rightArmHorizontal}px`
+       
         
         legToBody(rightLegCSS);
         legToBody(leftLegCSS);
+        legToBody(rightArmCSS);
+        legToBody(leftArmCSS);
 
     }
     function legUpdate() {
@@ -55,21 +73,33 @@ let leftLegTargetV = 0;
 let leftLegTargetH = 0;
 let rightLegTargetV = 0;
 let rightLegTargetH = 0;
+
+let leftArmTargetV = 0;
+let leftArmTargetH = 0;
+let rightArmTargetV = 0;
+let rightArmTargetH = 0;
+
 console.log(document.getElementById("rag-body").offsetWidth)
 
 
-const lerp = (a, b, amount) => (1 - amount) * a + amount * b;
+//const lerp = (a, b, amount) => (1 - amount) * a + amount * b;
 
 let lerpAmount = 1;
 
 let legPosContainer1 = [0,0,0,0];
 let legPosContainer2 = [0,0,0,0];
+let armPosContainer1 = [0,0,0,0];
+let armPosContainer2 = [0,0,0,0];
 let center1 = [0,0]
 let center2 = [0,0]
+let center3 = [0,0]
+let center4 = [0,0]
+
 function legToBody(leg){
-let legPosContainer;
-let legCenter;
-let bodCenter = [(bodyHorizontal + width/2),(bodyVertical + width/2)]
+    let legPosContainer;
+    let legCenter;
+    
+    let bodCenter = [(bodyHorizontal + width/2),(bodyVertical + width/2)]
 
     if(leg == rightLegCSS){
         legPosContainer = legPosContainer1
@@ -82,8 +112,7 @@ let bodCenter = [(bodyHorizontal + width/2),(bodyVertical + width/2)]
         center1[0] = (rightLegHorizontal + legWidth/2)
         center1[1] = (rightLegVertical + legWidth/2)
 
-        document.getElementById('circle-debug').style.top = `${center1[1]}px`
-        document.getElementById('circle-debug').style.left = `${center1[0]}px`
+        
 
     }else if(leg == leftLegCSS){
         legPosContainer = legPosContainer2
@@ -92,8 +121,27 @@ let bodCenter = [(bodyHorizontal + width/2),(bodyVertical + width/2)]
         legPosContainer[2] = bodyHorizontal  - document.getElementById("left-leg").offsetWidth;;
         legPosContainer[3] = bodyVertical + width;
         legCenter = center2;
-        center2[0] = (rightLegHorizontal + legWidth/2)
-        center2[1] = (rightLegVertical + legWidth/2)
+        center2[0] = (leftLegHorizontal + legWidth/2)
+        center2[1] = (leftLegVertical + legWidth/2)
+    }else if(leg == rightArmCSS){
+        legPosContainer = armPosContainer1
+        rightArmHorizontal = legPosContainer[0]
+        rightArmVertical = legPosContainer[1]
+        legPosContainer[2] = bodyHorizontal + width;
+        legPosContainer[3] = bodyVertical;
+        armCenter = center3;
+       
+        center3[0] = (rightArmHorizontal + legWidth/2)
+        center3[1] = (rightArmVertical + legWidth/2)
+    }else if(leg == leftArmCSS){
+        legPosContainer = armPosContainer2
+        leftArmHorizontal = legPosContainer[0]
+        leftArmVertical = legPosContainer[1]
+        legPosContainer[2] = bodyHorizontal  - document.getElementById("left-arm").offsetWidth;;
+        legPosContainer[3] = bodyVertical;
+        legCenter = center4;
+        center4[0] = (leftArmHorizontal + legWidth/2)
+        center4[1] = (leftArmVertical + legWidth/2)
     }
         
         
@@ -129,35 +177,81 @@ let bodCenter = [(bodyHorizontal + width/2),(bodyVertical + width/2)]
                 legPosContainer[1] = legPosContainer[3] + maxLegDist
         }
 
-        //if(bodyVertical - width/2)
-        var angleDeg = Math.atan(bodCenter[1] - center1[1],bodCenter[0]-center1[0] ) * 180 / Math.PI;
-        
-        if(center1[0] > bodCenter[0] + -width/2 && center1[1] < bodCenter[1] + width/2){
-            let x = (bodCenter[0] + width/2 * Math.cos(angleDeg))-legWidth/2;
-            let y = (bodCenter[1] + width/2 * Math.sin(angleDeg))+legWidth/2;
+
+
+        if(leg == rightLegCSS){
+            var angleDeg = Math.atan2(((window.screen.height - bodCenter[1]) - (window.screen.height - center1[1])),-1*(bodCenter[0]-center1[0]) )
+            let x = (bodCenter[0])+ (width/2 * Math.cos(angleDeg))//+legWidth/2;
+            let y = (bodCenter[1])+ (width/2 * Math.sin(angleDeg))//+legWidth/2;
+     
+
+            //document.getElementById('circle-debug').style.top = `${y}px`
+            //document.getElementById('circle-debug').style.left = `${x}px`
             
-            
-            //console.log("inside")
-            //legPosContainer1[0] = (bodCenter[0] + width/2) - legWidth/2;
-            //legPosContainer1[1] = (bodCenter[1] + width/2)- legWidth/2;
-            if(leg == rightLegCSS){
-            legPosContainer[0] = x;
-            legPosContainer[1] = y;
+            if((center1[0] <= bodCenter[0] + width/1.8) && (center1[1] <= bodCenter[1] + width/1.8)) {
+ 
+                legPosContainer[0] = x;
+                legPosContainer[1] = y;
             }
+           
+
+        }else if(leg == leftLegCSS){
+            var angleDeg = Math.atan2(((window.screen.height - bodCenter[1]) - (window.screen.height - center2[1])),(bodCenter[0]-center2[0]) )
+            let x = (bodCenter[0])- (width/2 * Math.cos(angleDeg))//+legWidth/2;
+            let y = (bodCenter[1])+ (width/2 * Math.sin(angleDeg))//+legWidth/2;
             
-            console.log(x, y)
-            //legPosContainer1[0] = (bodCenter[1] + width/2) - legPosContainer1[1]
-            //legPosContainer1[1] = legPosContainer1[1]
+            // document.getElementById('circle-debug').style.top = `${y}px`
+            // document.getElementById('circle-debug').style.left = `${x}px`
+            
+            //console.log(x,y)
+            if((center2[0] >= bodCenter[0] - width/1.8) && (center2[1] <= bodCenter[1] + width/1.8)) {
+                //console.log("inside")
+                legPosContainer[0] = x - width/2.2;
+                legPosContainer[1] = y;
+            }
+           
 
+        }else if(leg == rightArmCSS){
+            var angleDeg = Math.atan2(((window.screen.height - bodCenter[1]) - (window.screen.height - center3[1])),-1*(bodCenter[0]-center3[0]) )
+            let x = (bodCenter[0])+ (width/2 * Math.cos(angleDeg))//+legWidth/2;
+            let y = (bodCenter[1])+ (width/2 * Math.sin(angleDeg))//+legWidth/2;
+     
 
+             document.getElementById('circle-debug').style.top = `${y}px`
+             document.getElementById('circle-debug').style.left = `${x}px`
+        
+       
+            if((center3[0] <= bodCenter[0] + width/1.8) && (center3[1] >= bodCenter[1] - width/1.8)) {
+                //console.log("inside")
+                legPosContainer[0] = x;
+                legPosContainer[1] = y-width/2.2;
+            }
+           
+
+        }else if(leg == leftArmCSS){
+            var angleDeg = Math.atan2(((window.screen.height - bodCenter[1]) - (window.screen.height - center4[1])),(bodCenter[0]-center4[0]) )
+            let x = (bodCenter[0])- (width/2 * Math.cos(angleDeg))//+legWidth/2;
+            let y = (bodCenter[1])+ (width/2 * Math.sin(angleDeg))//+legWidth/2;
+            
+            //document.getElementById('circle-debug').style.top = `${y}px`
+            //document.getElementById('circle-debug').style.left = `${x}px`
+      
+            //console.log(x,y)
+            if((center4[0] >= bodCenter[0] - width/1.8) && (center4[1] <= bodCenter[1] + width/1.8)) {
+                
+                legPosContainer[0] = x - width/2.2;
+                legPosContainer[1] = y - width/2.2;
+            }
+           
 
         }
+    }
 
 
 
     
 
-}
+
 
 
 onmousemove = function(e){mouseX = e.clientX;  mouseY = e.clientY;}

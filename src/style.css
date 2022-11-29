@@ -17,6 +17,15 @@
     clip-path: circle();
     background: lightblue;
 }
+.circle-head {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin: 20px;
+    shape-outside: circle();
+    clip-path: circle();
+    background: lightblue;
+}
 
 .circle-debugger{
     position: absolute;
