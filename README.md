@@ -1,0 +1,2 @@
+# ragdoll-test
+simulate ragdoll
