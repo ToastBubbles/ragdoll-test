@@ -1,16 +1,19 @@
 var bodyCSS = document.getElementById("rag-body").style;
+var headCSS = document.getElementById("rag-head").style;
 var leftLegCSS = document.getElementById("left-leg").style;
 var rightLegCSS = document.getElementById("right-leg").style;
 var leftArmCSS = document.getElementById("left-arm").style;
 var rightArmCSS = document.getElementById("right-arm").style;
 
 var bodyVertical = 0;
+var headVertical = 0;
 var rightLegVertical = 0;
 var leftLegVertical = 0;
 var rightArmVertical = 0;
 var leftArmVertical = 0;
 
 var bodyHorizontal = 0;
+var headHorizontal = 0;
 var rightLegHorizontal = 0;
 var leftLegHorizontal = 0;
 var rightArmHorizontal = 0;
@@ -18,6 +21,7 @@ var leftArmHorizontal = 0;
 
 var width = document.getElementById("rag-body").offsetWidth;
 var legWidth = document.getElementById("left-leg").offsetWidth;
+var headWidth = document.getElementById("rag-head").offsetWidth;
 
 
 let mouseX = 0;
@@ -49,6 +53,9 @@ window.onload = function() {
         leftArmCSS.top = `${leftArmVertical}px`;  
         leftArmCSS.left = `${leftArmHorizontal}px`; 
 
+        headCSS.top = `${headVertical}px`;  
+        headCSS.left = `${headHorizontal}px`; 
+
         // document.getElementById('circle-debug').style.top = `${rightArmVertical}px`
         // document.getElementById('circle-debug').style.left = `${rightArmHorizontal}px`
        
@@ -57,6 +64,7 @@ window.onload = function() {
         legToBody(leftLegCSS);
         legToBody(rightArmCSS);
         legToBody(leftArmCSS);
+        legToBody(headCSS);
 
     }
     function legUpdate() {
@@ -79,7 +87,10 @@ let leftArmTargetH = 0;
 let rightArmTargetV = 0;
 let rightArmTargetH = 0;
 
-console.log(document.getElementById("rag-body").offsetWidth)
+let headTargetV = 0;
+let headTargetH = 0;
+
+//console.log(document.getElementById("rag-body").offsetWidth)
 
 
 //const lerp = (a, b, amount) => (1 - amount) * a + amount * b;
@@ -90,10 +101,12 @@ let legPosContainer1 = [0,0,0,0];
 let legPosContainer2 = [0,0,0,0];
 let armPosContainer1 = [0,0,0,0];
 let armPosContainer2 = [0,0,0,0];
+let headContainer = [0,0,0,0];
 let center1 = [0,0]
 let center2 = [0,0]
 let center3 = [0,0]
 let center4 = [0,0]
+let centerH = [0,0]
 
 function legToBody(leg){
     let legPosContainer;
@@ -142,6 +155,17 @@ function legToBody(leg){
         legCenter = center4;
         center4[0] = (leftArmHorizontal + legWidth/2)
         center4[1] = (leftArmVertical + legWidth/2)
+    }else if(leg == headCSS){
+        //console.log("head")
+        legPosContainer = headContainer
+        headHorizontal = legPosContainer[0]
+        headVertical = legPosContainer[1]
+        legPosContainer[2] = bodyHorizontal + width/4;
+        legPosContainer[3] = bodyVertical - width/1.2;
+        legCenter = centerH;
+       
+        centerH[0] = (headHorizontal + headWidth/2)
+        centerH[1] = (headVertical + headWidth/2)
     }
         
         
@@ -217,8 +241,8 @@ function legToBody(leg){
             let y = (bodCenter[1])+ (width/2 * Math.sin(angleDeg))//+legWidth/2;
      
 
-             document.getElementById('circle-debug').style.top = `${y}px`
-             document.getElementById('circle-debug').style.left = `${x}px`
+            //  document.getElementById('circle-debug').style.top = `${y}px`
+            //  document.getElementById('circle-debug').style.left = `${x}px`
         
        
             if((center3[0] <= bodCenter[0] + width/1.8) && (center3[1] >= bodCenter[1] - width/1.8)) {
@@ -241,6 +265,26 @@ function legToBody(leg){
                 
                 legPosContainer[0] = x - width/2.2;
                 legPosContainer[1] = y - width/2.2;
+            }
+           
+
+        }else if(leg == headCSS){
+            var angleDeg = Math.atan2(((window.screen.height - bodCenter[1]) - (window.screen.height - centerH[1])),(bodCenter[0]-centerH[0]) )
+            let x = (bodCenter[0])- (width/2 * Math.cos(angleDeg))//+legWidth/2;
+            let y = (bodCenter[1])+ (width/2 * Math.sin(angleDeg))//+legWidth/2;
+            
+            document.getElementById('circle-debug').style.top = `${y}px`
+            document.getElementById('circle-debug').style.left = `${x}px`
+      
+            //console.log(x,y)
+            if((centerH[0] >= bodCenter[0] - width/1.8) && (centerH[1] >= bodCenter[1] - width/1.8)&& centerH[0]>bodCenter[0]) {
+                console.log("insideleft")
+                legPosContainer[0] = x;
+                legPosContainer[1] = y - width/2.2 ;
+            }else if((centerH[0] >= bodCenter[0] - width/1.8) && (centerH[1] >= bodCenter[1] - width/1.8) && centerH[0]<bodCenter[0]) {
+                console.log("insideright")
+                legPosContainer[0] = x - width/2.2;
+                legPosContainer[1] = y - width/2.2 ;
             }
            
 
