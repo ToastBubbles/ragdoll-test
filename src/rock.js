@@ -159,8 +159,9 @@ function rockSpawn(){
         //}
       }
     });
-  
+    if(!failed){
     requestAnimationFrame(move);
+    }
   }
 
   function fail(){
@@ -169,6 +170,7 @@ function rockSpawn(){
     mouseControl = false
     move_speed = 0
     document.getElementById("rag-body").innerText = `failed`
+    alert("get rekt")
   }
   //move();
   requestAnimationFrame(move);
