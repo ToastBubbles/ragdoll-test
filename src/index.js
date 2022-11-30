@@ -27,6 +27,8 @@ var headWidth = document.getElementById("rag-head").offsetWidth;
 let mouseX = 0;
 let mouseY = 0;
 
+let mouseControl = true;
+
 
 let maxLegDist = 50;
 
@@ -35,8 +37,10 @@ let maxLegDist = 50;
 
 window.onload = function() {            
     function bodyUpdate() {
+        if(mouseControl){
         bodyVertical = mouseY - width;
         bodyHorizontal = mouseX - width;
+        }
 
         bodyCSS.top = `${bodyVertical}px`;
         bodyCSS.left = `${bodyHorizontal}px`;
@@ -273,9 +277,7 @@ function legToBody(leg){
             let x = (bodCenter[0])- (width/2 * Math.cos(angleDeg))//+legWidth/2;
             let y = (bodCenter[1])+ (width/2 * Math.sin(angleDeg))//+legWidth/2;
             
-            document.getElementById('circle-debug').style.top = `${y}px`
-            document.getElementById('circle-debug').style.left = `${x}px`
-      
+            
             //console.log(x,y)
             if((centerH[0] >= bodCenter[0] - width/1.8) && (centerH[1] >= bodCenter[1] - width/1.8)&& centerH[0]>bodCenter[0]) {
                 //console.log("insideleft")
