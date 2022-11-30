@@ -77,3 +77,14 @@ body{
     clip-path: circle();
     background: darkgreen;
 }
+
+
+.rock{
+    position: absolute;
+    z-index: 2;
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+    clip-path: polygon(50% 0%, 75% 29%, 95% 22%, 100% 51%, 85% 99%, 20% 98%, 2% 63%, 13% 43%, 35% 59%);
+    background: darkgrey;
+}

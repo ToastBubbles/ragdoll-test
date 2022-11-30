@@ -278,11 +278,11 @@ function legToBody(leg){
       
             //console.log(x,y)
             if((centerH[0] >= bodCenter[0] - width/1.8) && (centerH[1] >= bodCenter[1] - width/1.8)&& centerH[0]>bodCenter[0]) {
-                console.log("insideleft")
+                //console.log("insideleft")
                 legPosContainer[0] = x;
                 legPosContainer[1] = y - width/2.2 ;
             }else if((centerH[0] >= bodCenter[0] - width/1.8) && (centerH[1] >= bodCenter[1] - width/1.8) && centerH[0]<bodCenter[0]) {
-                console.log("insideright")
+                //console.log("insideright")
                 legPosContainer[0] = x - width/2.2;
                 legPosContainer[1] = y - width/2.2 ;
             }
