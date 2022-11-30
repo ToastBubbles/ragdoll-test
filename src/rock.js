@@ -21,7 +21,7 @@ function rockGenerator() {
 let rockY = -100;
 
 function rockSpawn() {
-  let randomX = Math.floor(Math.random() * (window.screen.width - 100));
+  let randomX = Math.floor(Math.random() * (window.innerWidth - 100));
   //console.log(randomX)
   let rock = `<div class="rock" style="left: ${randomX}px; top: ${rockY}px"></div>`;
   return rock;
@@ -124,7 +124,7 @@ function move() {
       "circle-debug"
     ).style.left = `${rockPoints.point1.x}px`;
 
-    if (rock_prefab_rect.top >= window.screen.height) {
+    if (rock_prefab_rect.top >= window.innerHeight) {
       rockCount--;
       element.remove();
     } else {
